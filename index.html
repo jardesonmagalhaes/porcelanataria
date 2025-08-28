@@ -1,273 +1,354 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Valnei Assis Porcelanataria</title>
   <style>
-    /* ======= RESET ======= */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body { background: #f3f4f6; color: #333; line-height: 1.6; }
+    /* ======= DESIGN SYSTEM ======= */
+    :root {
+      --primary: #0a74da;
+      --primary-700: #0d47a1;
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 8px 20px rgba(0,0,0,.06);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
 
     /* ======= HEADER ======= */
     header {
-      background: linear-gradient(135deg, #0d47a1, #1976d2);
-      color: #fff; text-align: center; padding: 1.5rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      background: linear-gradient(135deg, var(--primary-700), var(--primary));
+      color: #fff; padding: 24px 16px; box-shadow: var(--shadow);
     }
-    header h1 { font-size: 1.8rem; margin-bottom: .3rem; }
-    header p { font-size: 1rem; opacity: .9; }
+    .header-wrap { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand { display: flex; flex-direction: column; }
+    .brand h1 { margin: 0; font-size: 24px; letter-spacing: .3px; }
+    .brand p { margin: 2px 0 0; opacity: .9; font-size: 14px; }
+    .btn-reset {
+      appearance: none; border: 1px solid rgba(255,255,255,.6); background: transparent; color: #fff;
+      padding: 8px 12px; border-radius: 999px; font-weight: 600; cursor: pointer;
+      transition: .2s;
+    }
+    .btn-reset:hover { background: rgba(255,255,255,.12); }
 
-    /* ======= MAIN ======= */
-    main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    /* ======= LAYOUT ======= */
+    main { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
 
-    /* FORM */
+    /* ======= FORM ======= */
     form {
-      background: #fff; padding: 1.5rem; border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 2rem;
+      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 20px; margin-bottom: 24px;
     }
-    form h2 { margin-bottom: 1rem; color: #0d47a1; }
-    label { display: block; margin-top: 1rem; font-weight: 600; }
-    input, textarea, button {
-      width: 100%; padding: .7rem; margin-top: .3rem;
-      border: 1px solid #ddd; border-radius: 8px; font-size: .95rem;
+    form h2 { margin: 0 0 10px; color: var(--primary-700); font-size: 18px; }
+    .grid {
+      display: grid; gap: 12px; grid-template-columns: repeat(12, 1fr);
     }
-    textarea { resize: vertical; min-height: 70px; }
-    button {
-      margin-top: 1.2rem; background: #1976d2; color: #fff;
-      font-weight: bold; cursor: pointer; border: none; transition: .3s;
-    }
-    button:hover { background: #0d47a1; }
+    .col-12 { grid-column: span 12; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    .col-3 { grid-column: span 3; }
 
-    /* RESUMO */
-    #resumo {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem; margin-bottom: 2rem;
+    @media (max-width: 640px) {
+      .col-6, .col-4, .col-3 { grid-column: span 12; }
     }
-    .card-resumo {
-      background: #fff; padding: 1rem; border-radius: 12px;
-      text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .card-resumo h3 { font-size: 1rem; margin-bottom: .5rem; color: #555; }
-    .card-resumo p { font-size: 1.2rem; font-weight: bold; color: #0d47a1; }
 
-    /* FILTROS */
-    #filtros { text-align: center; margin-bottom: 2rem; }
+    label { display: block; font-weight: 600; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    input, textarea {
+      width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff;
+      font-size: 14px; outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(10,116,218,.12); }
+    textarea { min-height: 80px; resize: vertical; }
+
+    .btn-primary {
+      appearance: none; border: none; background: var(--primary); color: #fff; font-weight: 700;
+      padding: 12px 16px; border-radius: 12px; cursor: pointer; transition: transform .06s ease, opacity .2s;
+    }
+    .btn-primary:hover { opacity: .95; }
+    .btn-primary:active { transform: translateY(1px); }
+
+    /* ======= RESUMO ======= */
+    #resumo { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 22px; }
+    .card {
+      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; text-align: center;
+    }
+    .card h3 { margin: 0 0 6px; font-size: 14px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
+    .card p { margin: 0; font-size: 22px; font-weight: 800; color: var(--primary-700); }
+
+    /* ======= FILTROS ======= */
+    #filtros { display: flex; align-items: center; gap: 8px; justify-content: center; margin: 18px 0 22px; flex-wrap: wrap; }
     #filtros button {
-      display: inline-block; margin: 0 .4rem; padding: .5rem 1rem;
-      border-radius: 20px; border: none; background: #eee;
-      cursor: pointer; font-weight: 600; transition: .3s;
+      border: none; background: #e5e7eb; color: #111827; font-weight: 700; padding: 8px 14px; border-radius: 999px; cursor: pointer; transition: .2s;
     }
-    #filtros button.active, #filtros button:hover { background: #1976d2; color: #fff; }
+    #filtros button.active, #filtros button:hover { background: var(--primary); color: #fff; }
 
-    /* LISTA */
-    .agendamento {
-      background: #fff; padding: 1rem; border-radius: 12px;
-      margin-bottom: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .campo { margin: .4rem 0; }
-    .campo strong { color: #444; display: inline-block; min-width: 120px; }
-    .status { font-weight: 600; margin: .5rem 0; }
-    .acoes { margin-top: .5rem; display: flex; gap: .5rem; }
-    .acoes .acao {
-      flex: 1; padding: .5rem; border: none; border-radius: 8px;
-      font-weight: bold; cursor: pointer; transition: .3s;
-    }
-    .concluir { background: #4caf50; color: #fff; }
-    .cancelar { background: #ff9800; color: #fff; }
-    .excluir { background: #f44336; color: #fff; }
-    .acao:hover { opacity: .9; }
+    /* ======= LISTA ======= */
+    #lista-agendamentos h2 { margin: 0 0 10px; color: var(--primary-700); font-size: 18px; text-align: center; }
+    #agendamentos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+
+    .agendamento { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+    .campo strong { display: block; font-size: 12px; color: var(--muted); }
+    .campo span { font-size: 15px; color: var(--text); font-weight: 600; }
+    .status { margin-top: 6px; font-weight: 700; }
+    .acoes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+    .acao { border: none; border-radius: 10px; padding: 10px; font-weight: 800; color: #fff; cursor: pointer; transition: .2s; }
+    .acao:hover { filter: brightness(.96); }
+    .concluir { background: var(--success); }
+    .cancelar { background: var(--warning); }
+    .excluir { background: var(--danger); }
+
+    /* Helper text */
+    .muted { color: var(--muted); font-size: 13px; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Valnei Assis Porcelanataria</h1>
-    <p>Sistema de Agendamento de Clientes</p>
+    <div class="header-wrap">
+      <div class="brand">
+        <h1>Valnei Assis Porcelanataria</h1>
+        <p>Gestão de Agendamentos</p>
+      </div>
+      <button class="btn-reset" id="btnLimpar">Limpar dados</button>
+    </div>
   </header>
 
   <main>
     <!-- FORM -->
-    <form id="agendamento-form">
+    <form id="agendamento-form" novalidate>
       <h2>Novo Agendamento</h2>
-      <label for="nome">Nome do Cliente</label>
-      <input type="text" id="nome" required>
-
-      <label for="valor">Valor (R$)</label>
-      <input type="number" id="valor" required>
-
-      <label for="gasto">Gasto (R$)</label>
-      <input type="number" id="gasto" required>
-
-      <label for="dataEntrega">Data de Entrega</label>
-      <input type="date" id="dataEntrega" required>
-
-      <label for="servico">Serviço</label>
-      <textarea id="servico"></textarea>
-
-      <button id="btnSalvar" type="submit">Salvar Agendamento</button>
+      <div class="grid">
+        <div class="col-6">
+          <label for="nome">Nome do Cliente</label>
+          <input type="text" id="nome" placeholder="Ex.: Maria Silva" autocomplete="off" required />
+        </div>
+        <div class="col-3">
+          <label for="valor">Valor (R$)</label>
+          <input type="number" id="valor" placeholder="0,00" step="0.01" min="0" required />
+        </div>
+        <div class="col-3">
+          <label for="gasto">Gasto (R$)</label>
+          <input type="number" id="gasto" placeholder="0,00" step="0.01" min="0" required />
+        </div>
+        <div class="col-4">
+          <label for="dataEntrega">Data de Entrega</label>
+          <input type="date" id="dataEntrega" required />
+        </div>
+        <div class="col-12">
+          <label for="servico">Serviço</label>
+          <textarea id="servico" placeholder="Ex.: Porcelanato 80x80, rejunte cinza, entrega no centro..."></textarea>
+        </div>
+        <div class="col-12">
+          <button class="btn-primary" id="btnSalvar" type="submit">Salvar Agendamento</button>
+        </div>
+      </div>
+      <p class="muted" id="msg"></p>
     </form>
 
     <!-- RESUMO -->
     <section id="resumo">
-      <div class="card-resumo">
-        <h3>Ganhos Brutos (Mês)</h3>
-        <p id="ganhos">R$ 0,00</p>
-      </div>
-      <div class="card-resumo">
-        <h3>Gastos (Mês)</h3>
-        <p id="gastos">R$ 0,00</p>
-      </div>
-      <div class="card-resumo">
-        <h3>Lucro Líquido (Mês)</h3>
-        <p id="lucro">R$ 0,00</p>
-      </div>
-      <div class="card-resumo">
-        <h3>Concluídos</h3>
-        <p id="totalConcluidos">0</p>
-      </div>
+      <div class="card"><h3>Ganhos Brutos (Mês)</h3><p id="ganhos">R$ 0,00</p></div>
+      <div class="card"><h3>Gastos (Mês)</h3><p id="gastos">R$ 0,00</p></div>
+      <div class="card"><h3>Lucro Líquido (Mês)</h3><p id="lucro">R$ 0,00</p></div>
+      <div class="card"><h3>Concluídos</h3><p id="totalConcluidos">0</p></div>
     </section>
 
     <!-- FILTROS -->
     <section id="filtros">
-      <button onclick="filtrar('todos')" class="active">Todos</button>
-      <button onclick="filtrar('pendentes')">Pendentes</button>
-      <button onclick="filtrar('concluidos')">Concluídos</button>
+      <button data-filter="todos" class="active">Todos</button>
+      <button data-filter="pendentes">Pendentes</button>
+      <button data-filter="concluidos">Concluídos</button>
     </section>
 
     <!-- LISTA -->
     <section id="lista-agendamentos">
-      <h2 style="margin-bottom:1rem; color:#0d47a1;">Agendamentos</h2>
+      <h2>Agendamentos</h2>
       <div id="agendamentos-container"></div>
     </section>
   </main>
 
   <script>
-    const form = document.getElementById('agendamento-form');
-    const container = document.getElementById('agendamentos-container');
-    const ganhosEl = document.getElementById("ganhos");
-    const gastosEl = document.getElementById("gastos");
-    const lucroEl = document.getElementById("lucro");
-    const concluidosEl = document.getElementById("totalConcluidos");
-    const filtrosBtns = document.querySelectorAll("#filtros button");
+    (function() {
+      const form = document.getElementById('agendamento-form');
+      const msg = document.getElementById('msg');
+      const container = document.getElementById('agendamentos-container');
+      const ganhosEl = document.getElementById('ganhos');
+      const gastosEl = document.getElementById('gastos');
+      const lucroEl = document.getElementById('lucro');
+      const concluidosEl = document.getElementById('totalConcluidos');
+      const filtros = document.getElementById('filtros');
+      const btnLimpar = document.getElementById('btnLimpar');
 
-    let filtroAtual = "todos";
-    let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+      const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    function salvarAgendamentos() {
-      localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
-    }
+      let filtroAtual = 'todos';
+      let agendamentos = [];
 
-    function criarAgendamentoHTML(agendamento, index) {
-      const div = document.createElement('div');
-      div.className = 'agendamento';
+      // Carrega do localStorage com tolerância a erro
+      function carregarAgendamentos() {
+        try {
+          const raw = localStorage.getItem('agendamentos');
+          agendamentos = raw ? JSON.parse(raw) : [];
+          if (!Array.isArray(agendamentos)) agendamentos = [];
+        } catch (e) {
+          console.warn('LocalStorage corrompido. Reiniciando...', e);
+          agendamentos = [];
+          localStorage.removeItem('agendamentos');
+        }
+        // Migração de dados antigos (sem gasto/servico)
+        agendamentos = agendamentos.map(a => ({
+          nome: a.nome || '',
+          valor: Number(a.valor) || 0,
+          gasto: Number(a.gasto) || 0,
+          dataEntrega: a.dataEntrega || a.data || new Date().toISOString().slice(0,10),
+          servico: a.servico || a.comentarios || '',
+          concluido: !!a.concluido,
+          criadoEm: a.criadoEm || new Date().toISOString()
+        }));
+        salvarAgendamentos();
+      }
 
-      div.innerHTML = `
-        <div class="campo"><strong>Cliente</strong><span>${agendamento.nome}</span></div>
-        <div class="campo"><strong>Valor</strong><span>R$ ${agendamento.valor.toFixed(2)}</span></div>
-        <div class="campo"><strong>Gasto</strong><span>R$ ${agendamento.gasto.toFixed(2)}</span></div>
-        <div class="campo"><strong>Data de Entrega</strong><span>${new Date(agendamento.dataEntrega).toLocaleDateString("pt-BR")}</span></div>
-        <div class="campo"><strong>Serviço</strong><span>${agendamento.servico || 'Não informado'}</span></div>
-        <p class="status"><strong>Status:</strong> ${agendamento.concluido ? '✅ Concluído' : '⏳ Pendente'}</p>
-        <div class="acoes">
-          ${!agendamento.concluido 
-            ? `<button class="acao concluir" onclick="concluirAgendamento(${index})">Concluir</button>` 
-            : `<button class="acao cancelar" onclick="cancelarConclusao(${index})">Cancelar</button>`}
-          <button class="acao excluir" onclick="excluirAgendamento(${index})">Excluir</button>
-        </div>
-      `;
-      return div;
-    }
+      function salvarAgendamentos() {
+        localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+      }
 
-    function atualizarResumo() {
-      let ganhosMes = 0, gastosMes = 0, concluidos = 0;
-      const agora = new Date();
-      const mesAtual = agora.getMonth();
-      const anoAtual = agora.getFullYear();
+      function campo(label, valor) {
+        return `<div class="campo"><strong>${label}</strong><span>${valor}</span></div>`;
+      }
 
-      agendamentos.forEach(ag => {
-        const dataAg = new Date(ag.dataEntrega);
-        if (ag.concluido) {
-          concluidos++;
-          if (dataAg.getMonth() === mesAtual && dataAg.getFullYear() === anoAtual) {
-            ganhosMes += ag.valor;
-            gastosMes += ag.gasto;
+      function criarAgendamentoHTML(agendamento, index) {
+        const div = document.createElement('div');
+        div.className = 'agendamento';
+        const dataBR = new Date(agendamento.dataEntrega).toLocaleDateString('pt-BR');
+
+        div.innerHTML = `
+          ${campo('Cliente', agendamento.nome || '-')}
+          ${campo('Valor', BRL.format(Number(agendamento.valor) || 0))}
+          ${campo('Gasto', BRL.format(Number(agendamento.gasto) || 0))}
+          ${campo('Data de Entrega', dataBR)}
+          ${campo('Serviço', agendamento.servico || 'Não informado')}
+          <p class="status"><strong>Status:</strong> ${agendamento.concluido ? '✅ Concluído' : '⏳ Pendente'}</p>
+          <div class="acoes">
+            ${agendamento.concluido
+              ? `<button class="acao cancelar" data-acao="cancelar" data-index="${index}">Cancelar</button>`
+              : `<button class="acao concluir" data-acao="concluir" data-index="${index}">Concluir</button>`}
+            <button class="acao excluir" data-acao="excluir" data-index="${index}">Excluir</button>
+          </div>
+        `;
+        return div;
+      }
+
+      function atualizarResumo() {
+        const agora = new Date();
+        const mes = agora.getMonth();
+        const ano = agora.getFullYear();
+        let ganhosMes = 0, gastosMes = 0, concluidos = 0;
+
+        for (const a of agendamentos) {
+          const d = new Date(a.dataEntrega);
+          if (a.concluido) {
+            concluidos++;
+            if (d.getMonth() === mes && d.getFullYear() === ano) {
+              ganhosMes += Number(a.valor) || 0;
+              gastosMes += Number(a.gasto) || 0;
+            }
           }
+        }
+        ganhosEl.textContent = BRL.format(ganhosMes);
+        gastosEl.textContent = BRL.format(gastosMes);
+        lucroEl.textContent = BRL.format(ganhosMes - gastosMes);
+        concluidosEl.textContent = String(concluidos);
+      }
+
+      function renderizarAgendamentos() {
+        container.innerHTML = '';
+        let lista = agendamentos;
+        if (filtroAtual === 'pendentes') lista = agendamentos.filter(a => !a.concluido);
+        if (filtroAtual === 'concluidos') lista = agendamentos.filter(a => a.concluido);
+
+        if (!lista.length) {
+          container.innerHTML = '<p class="muted" style="text-align:center">Nenhum agendamento encontrado.</p>';
+        } else {
+          lista.forEach((item, index) => container.appendChild(criarAgendamentoHTML(item, index)));
+        }
+        atualizarResumo();
+      }
+
+      // SUBMIT
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        msg.textContent = '';
+
+        const nome = document.getElementById('nome').value.trim();
+        const valor = parseFloat(document.getElementById('valor').value.replace(',', '.'));
+        const gasto = parseFloat(document.getElementById('gasto').value.replace(',', '.'));
+        const dataEntrega = document.getElementById('dataEntrega').value;
+        const servico = document.getElementById('servico').value.trim();
+
+        if (!nome || isNaN(valor) || isNaN(gasto) || !dataEntrega) {
+          msg.textContent = 'Preencha todos os campos obrigatórios com valores válidos.';
+          return;
+        }
+
+        const novo = { nome, valor, gasto, dataEntrega, servico, concluido: false, criadoEm: new Date().toISOString() };
+        agendamentos.push(novo);
+        salvarAgendamentos();
+        form.reset();
+        renderizarAgendamentos();
+        msg.textContent = 'Agendamento salvo com sucesso!';
+      });
+
+      // Ações (concluir/cancelar/excluir) via delegação
+      container.addEventListener('click', function(e) {
+        const btn = e.target.closest('button[data-acao]');
+        if (!btn) return;
+        const i = Number(btn.getAttribute('data-index'));
+        const acao = btn.getAttribute('data-acao');
+        if (acao === 'concluir') agendamentos[i].concluido = true;
+        if (acao === 'cancelar') agendamentos[i].concluido = false;
+        if (acao === 'excluir') {
+          if (!confirm('Deseja realmente excluir este agendamento?')) return;
+          agendamentos.splice(i, 1);
+        }
+        salvarAgendamentos();
+        renderizarAgendamentos();
+      });
+
+      // Filtros com um único listener
+      filtros.addEventListener('click', function(e) {
+        const btn = e.target.closest('button[data-filter]');
+        if (!btn) return;
+        filtroAtual = btn.getAttribute('data-filter');
+        filtros.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderizarAgendamentos();
+      });
+
+      // Limpar dados (para resolver dados antigos corrompidos)
+      btnLimpar.addEventListener('click', function() {
+        if (confirm('Isto vai apagar todos os agendamentos salvos neste navegador. Continuar?')) {
+          localStorage.removeItem('agendamentos');
+          agendamentos = [];
+          renderizarAgendamentos();
         }
       });
 
-      ganhosEl.textContent = "R$ " + ganhosMes.toFixed(2);
-      gastosEl.textContent = "R$ " + gastosMes.toFixed(2);
-      lucroEl.textContent = "R$ " + (ganhosMes - gastosMes).toFixed(2);
-      concluidosEl.textContent = concluidos;
-    }
-
-    function renderizarAgendamentos() {
-      container.innerHTML = '';
-      let lista = agendamentos;
-
-      if (filtroAtual === "pendentes") lista = agendamentos.filter(a => !a.concluido);
-      else if (filtroAtual === "concluidos") lista = agendamentos.filter(a => a.concluido);
-
-      if (lista.length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>Nenhum agendamento encontrado.</p>";
-      } else {
-        lista.forEach((item, index) => {
-          const agendamentoDiv = criarAgendamentoHTML(item, index);
-          container.appendChild(agendamentoDiv);
-        });
-      }
-      atualizarResumo();
-    }
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const nome = document.getElementById('nome').value.trim();
-      const valor = parseFloat(document.getElementById('valor').value);
-      const gasto = parseFloat(document.getElementById('gasto').value);
-      const dataEntrega = document.getElementById('dataEntrega').value;
-      const servico = document.getElementById('servico').value.trim();
-
-      if (!nome || isNaN(valor) || isNaN(gasto) || !dataEntrega) {
-        alert("Preencha todos os campos obrigatórios.");
-        return;
-      }
-
-      const novoAgendamento = { nome, valor, gasto, dataEntrega, servico, concluido: false };
-      agendamentos.push(novoAgendamento);
-      salvarAgendamentos();
+      // Inicialização
+      carregarAgendamentos();
       renderizarAgendamentos();
-      form.reset();
-    });
-
-    function concluirAgendamento(index) {
-      agendamentos[index].concluido = true;
-      salvarAgendamentos();
-      renderizarAgendamentos();
-    }
-
-    function cancelarConclusao(index) {
-      agendamentos[index].concluido = false;
-      salvarAgendamentos();
-      renderizarAgendamentos();
-    }
-
-    function excluirAgendamento(index) {
-      if (confirm("Deseja realmente excluir este agendamento?")) {
-        agendamentos.splice(index, 1);
-        salvarAgendamentos();
-        renderizarAgendamentos();
-      }
-    }
-
-    function filtrar(tipo) {
-      filtroAtual = tipo;
-      filtrosBtns.forEach(btn => btn.classList.remove("active"));
-      document.querySelector(`#filtros button[onclick="filtrar('${tipo}')"]`).classList.add("active");
-      renderizarAgendamentos();
-    }
-
-    renderizarAgendamentos();
+    })();
   </script>
 </body>
 </html>
