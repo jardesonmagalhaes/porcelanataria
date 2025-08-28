@@ -11,8 +11,10 @@
       --success: #28a745;
       --danger: #dc3545;
       --warning: #f0ad4e;
-      --bg: #f4f6f9;
+      --bg: #f7f9fc;
       --card-bg: #fff;
+      --text-dark: #333;
+      --text-light: #666;
     }
 
     * {
@@ -24,7 +26,7 @@
 
     body {
       background: var(--bg);
-      color: #333;
+      color: var(--text-dark);
       padding: 20px;
     }
 
@@ -40,7 +42,7 @@
     }
 
     header p {
-      color: #666;
+      color: var(--text-light);
       font-size: 1.1rem;
     }
 
@@ -50,7 +52,7 @@
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 600px;
+      max-width: 650px;
       margin: auto;
       margin-bottom: 30px;
     }
@@ -58,11 +60,19 @@
     form h2 {
       margin-bottom: 15px;
       color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 8px;
+    }
+
+    form label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text-dark);
     }
 
     form input,
-    form textarea,
-    form select {
+    form textarea {
       width: 100%;
       padding: 12px;
       margin-bottom: 15px;
@@ -89,7 +99,7 @@
 
     /* RESUMO */
     #resumo {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -118,7 +128,7 @@
 
     /* FILTROS */
     #filtros {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
       margin-bottom: 20px;
       text-align: center;
@@ -149,9 +159,9 @@
 
     #agendamentos-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 15px;
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
     }
 
@@ -160,19 +170,25 @@
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    .agendamento h3 {
-      color: var(--primary-dark);
+    .campo {
       margin-bottom: 8px;
     }
 
-    .agendamento p {
-      margin: 6px 0;
+    .campo strong {
+      display: block;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+    }
+
+    .campo span {
+      font-size: 1rem;
+      color: var(--text-dark);
     }
 
     .status {
@@ -204,22 +220,29 @@
     .concluir:hover { background-color: #1e7e34; }
     .cancelar:hover { background-color: #d48806; }
     .excluir:hover { background-color: #a71d2a; }
-
   </style>
 </head>
 <body>
   <header>
     <h1>Valnei Assis Porcelanataria</h1>
-    <p>Agendamento de Clientes</p>
+    <p>Sistema de Agendamento de Clientes</p>
   </header>
 
   <main>
     <form id="agendamento-form">
       <h2>Novo Agendamento</h2>
-      <input type="text" id="nome" placeholder="Nome do Cliente" required>
-      <input type="number" id="valor" placeholder="Valor do Produto/Serviço" required>
+      <label for="nome">Nome do Cliente</label>
+      <input type="text" id="nome" required>
+
+      <label for="valor">Valor (R$)</label>
+      <input type="number" id="valor" required>
+
+      <label for="dataEntrega">Data de Entrega</label>
       <input type="date" id="dataEntrega" required>
-      <textarea id="comentarios" placeholder="Comentários (opcional)"></textarea>
+
+      <label for="comentarios">Comentários</label>
+      <textarea id="comentarios" placeholder="Ex: modelo, cor, local de entrega..."></textarea>
+
       <button type="submit">Salvar Agendamento</button>
     </form>
 
@@ -273,11 +296,11 @@
       div.className = 'agendamento';
 
       div.innerHTML = `
-        <h3>${agendamento.nome}</h3>
-        <p><strong>Valor:</strong> R$ ${agendamento.valor.toFixed(2)}</p>
-        <p><strong>Entrega:</strong> ${new Date(agendamento.dataEntrega).toLocaleDateString("pt-BR")}</p>
-        <p><strong>Comentários:</strong> ${agendamento.comentarios || 'Nenhum'}</p>
-        <p class="status">Status: ${agendamento.concluido ? '✅ Concluído' : '⏳ Pendente'}</p>
+        <div class="campo"><strong>Cliente</strong><span>${agendamento.nome}</span></div>
+        <div class="campo"><strong>Valor</strong><span>R$ ${agendamento.valor.toFixed(2)}</span></div>
+        <div class="campo"><strong>Data de Entrega</strong><span>${new Date(agendamento.dataEntrega).toLocaleDateString("pt-BR")}</span></div>
+        <div class="campo"><strong>Comentários</strong><span>${agendamento.comentarios || 'Nenhum'}</span></div>
+        <p class="status"><strong>Status:</strong> ${agendamento.concluido ? '✅ Concluído' : '⏳ Pendente'}</p>
         <div class="acoes">
           ${!agendamento.concluido 
             ? `<button class="acao concluir" onclick="concluirAgendamento(${index})">Concluir</button>` 
@@ -292,8 +315,9 @@
     function atualizarResumo() {
       let ganhosMes = 0;
       let concluidos = 0;
-      const mesAtual = new Date().getMonth();
-      const anoAtual = new Date().getFullYear();
+      const agora = new Date();
+      const mesAtual = agora.getMonth();
+      const anoAtual = agora.getFullYear();
 
       agendamentos.forEach(ag => {
         const dataAg = new Date(ag.dataEntrega);
