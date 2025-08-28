@@ -5,7 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Valnei Assis Porcelanataria</title>
   <style>
-    /* RESET */
+    :root {
+      --primary: #0a74da;
+      --primary-dark: #064a9e;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #f0ad4e;
+      --bg: #f4f6f9;
+      --card-bg: #fff;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -14,7 +23,7 @@
     }
 
     body {
-      background: #f4f6f9;
+      background: var(--bg);
       color: #333;
       padding: 20px;
     }
@@ -25,21 +34,22 @@
     }
 
     header h1 {
-      font-size: 1.8rem;
-      color: #0a74da;
+      font-size: 2rem;
+      color: var(--primary);
       margin-bottom: 5px;
     }
 
     header p {
       color: #666;
+      font-size: 1.1rem;
     }
 
     /* FORM */
     form {
-      background: white;
+      background: var(--card-bg);
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       max-width: 600px;
       margin: auto;
       margin-bottom: 30px;
@@ -47,11 +57,12 @@
 
     form h2 {
       margin-bottom: 15px;
-      color: #0a74da;
+      color: var(--primary);
     }
 
     form input,
-    form textarea {
+    form textarea,
+    form select {
       width: 100%;
       padding: 12px;
       margin-bottom: 15px;
@@ -61,7 +72,7 @@
     }
 
     form button {
-      background: #0a74da;
+      background: var(--primary);
       color: white;
       padding: 12px;
       border: none;
@@ -73,62 +84,90 @@
     }
 
     form button:hover {
-      background: #064a9e;
+      background: var(--primary-dark);
     }
 
-    /* RESUMO FINANCEIRO */
+    /* RESUMO */
     #resumo {
-      max-width: 700px;
+      max-width: 900px;
       margin: auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 15px;
       margin-bottom: 30px;
     }
 
     .card-resumo {
-      background: white;
+      background: var(--card-bg);
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       text-align: center;
     }
 
     .card-resumo h3 {
-      color: #0a74da;
+      color: var(--primary);
       margin-bottom: 8px;
+      font-size: 1.1rem;
     }
 
     .card-resumo p {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: bold;
+    }
+
+    /* FILTROS */
+    #filtros {
+      max-width: 900px;
+      margin: auto;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #filtros button {
+      margin: 5px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      background: #e0e0e0;
+    }
+
+    #filtros button.active {
+      background: var(--primary);
+      color: white;
     }
 
     /* AGENDAMENTOS */
     #lista-agendamentos h2 {
       text-align: center;
       margin-bottom: 15px;
-      color: #0a74da;
+      color: var(--primary);
     }
 
     #agendamentos-container {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 15px;
-      max-width: 700px;
+      max-width: 900px;
       margin: auto;
     }
 
     .agendamento {
-      background: white;
+      background: var(--card-bg);
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .agendamento h3 {
-      color: #0a74da;
+      color: var(--primary-dark);
       margin-bottom: 8px;
     }
 
@@ -143,41 +182,29 @@
 
     .acoes {
       margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     button.acao {
-      padding: 8px 14px;
+      flex: 1;
+      padding: 10px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.9rem;
-      margin-right: 5px;
       transition: 0.3s;
     }
 
-    .concluir {
-      background-color: #28a745;
-      color: white;
-    }
+    .concluir { background-color: var(--success); color: white; }
+    .cancelar { background-color: var(--warning); color: white; }
+    .excluir { background-color: var(--danger); color: white; }
 
-    .excluir {
-      background-color: #dc3545;
-      color: white;
-    }
+    .concluir:hover { background-color: #1e7e34; }
+    .cancelar:hover { background-color: #d48806; }
+    .excluir:hover { background-color: #a71d2a; }
 
-    .concluir:hover {
-      background-color: #1e7e34;
-    }
-
-    .excluir:hover {
-      background-color: #a71d2a;
-    }
-
-    @media (max-width: 600px) {
-      form, #agendamentos-container, #resumo {
-        padding: 10px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -196,7 +223,7 @@
       <button type="submit">Salvar Agendamento</button>
     </form>
 
-    <!-- Resumo Financeiro -->
+    <!-- Resumo -->
     <section id="resumo">
       <div class="card-resumo">
         <h3>Ganhos do Mês</h3>
@@ -206,6 +233,17 @@
         <h3>Total de Agendamentos</h3>
         <p id="totalAgendamentos">0</p>
       </div>
+      <div class="card-resumo">
+        <h3>Concluídos</h3>
+        <p id="totalConcluidos">0</p>
+      </div>
+    </section>
+
+    <!-- Filtros -->
+    <section id="filtros">
+      <button onclick="filtrar('todos')" class="active">Todos</button>
+      <button onclick="filtrar('pendentes')">Pendentes</button>
+      <button onclick="filtrar('concluidos')">Concluídos</button>
     </section>
 
     <!-- Lista -->
@@ -220,7 +258,10 @@
     const container = document.getElementById('agendamentos-container');
     const ganhosEl = document.getElementById("ganhos");
     const totalEl = document.getElementById("totalAgendamentos");
+    const concluidosEl = document.getElementById("totalConcluidos");
+    const filtrosBtns = document.querySelectorAll("#filtros button");
 
+    let filtroAtual = "todos";
     let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
 
     function salvarAgendamentos() {
@@ -238,7 +279,9 @@
         <p><strong>Comentários:</strong> ${agendamento.comentarios || 'Nenhum'}</p>
         <p class="status">Status: ${agendamento.concluido ? '✅ Concluído' : '⏳ Pendente'}</p>
         <div class="acoes">
-          ${!agendamento.concluido ? `<button class="acao concluir" onclick="concluirAgendamento(${index})">Concluir</button>` : ''}
+          ${!agendamento.concluido 
+            ? `<button class="acao concluir" onclick="concluirAgendamento(${index})">Concluir</button>` 
+            : `<button class="acao cancelar" onclick="cancelarConclusao(${index})">Cancelar</button>`}
           <button class="acao excluir" onclick="excluirAgendamento(${index})">Excluir</button>
         </div>
       `;
@@ -248,11 +291,13 @@
 
     function atualizarResumo() {
       let ganhosMes = 0;
+      let concluidos = 0;
       const mesAtual = new Date().getMonth();
       const anoAtual = new Date().getFullYear();
 
       agendamentos.forEach(ag => {
         const dataAg = new Date(ag.dataEntrega);
+        if (ag.concluido) concluidos++;
         if (ag.concluido && dataAg.getMonth() === mesAtual && dataAg.getFullYear() === anoAtual) {
           ganhosMes += ag.valor;
         }
@@ -260,14 +305,23 @@
 
       ganhosEl.textContent = "R$ " + ganhosMes.toFixed(2);
       totalEl.textContent = agendamentos.length;
+      concluidosEl.textContent = concluidos;
     }
 
     function renderizarAgendamentos() {
       container.innerHTML = '';
-      if (agendamentos.length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>Nenhum agendamento até agora.</p>";
+      let lista = agendamentos;
+
+      if (filtroAtual === "pendentes") {
+        lista = agendamentos.filter(a => !a.concluido);
+      } else if (filtroAtual === "concluidos") {
+        lista = agendamentos.filter(a => a.concluido);
+      }
+
+      if (lista.length === 0) {
+        container.innerHTML = "<p style='text-align:center;'>Nenhum agendamento encontrado.</p>";
       } else {
-        agendamentos.forEach((item, index) => {
+        lista.forEach((item, index) => {
           const agendamentoDiv = criarAgendamentoHTML(item, index);
           container.appendChild(agendamentoDiv);
         });
@@ -309,12 +363,25 @@
       renderizarAgendamentos();
     }
 
+    function cancelarConclusao(index) {
+      agendamentos[index].concluido = false;
+      salvarAgendamentos();
+      renderizarAgendamentos();
+    }
+
     function excluirAgendamento(index) {
       if (confirm("Deseja realmente excluir este agendamento?")) {
         agendamentos.splice(index, 1);
         salvarAgendamentos();
         renderizarAgendamentos();
       }
+    }
+
+    function filtrar(tipo) {
+      filtroAtual = tipo;
+      filtrosBtns.forEach(btn => btn.classList.remove("active"));
+      document.querySelector(`#filtros button[onclick="filtrar('${tipo}')"]`).classList.add("active");
+      renderizarAgendamentos();
     }
 
     renderizarAgendamentos();
