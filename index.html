@@ -5,7 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Valnei Assis Porcelanataria</title>
   <style>
-    /* (mesmo CSS de antes, não alterei) */
+    /* ======= RESET ======= */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f3f4f6; color: #333; line-height: 1.6; }
+
+    /* ======= HEADER ======= */
+    header {
+      background: linear-gradient(135deg, #0d47a1, #1976d2);
+      color: #fff; text-align: center; padding: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    header h1 { font-size: 1.8rem; margin-bottom: .3rem; }
+    header p { font-size: 1rem; opacity: .9; }
+
+    /* ======= MAIN ======= */
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+
+    /* FORM */
+    form {
+      background: #fff; padding: 1.5rem; border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 2rem;
+    }
+    form h2 { margin-bottom: 1rem; color: #0d47a1; }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    input, textarea, button {
+      width: 100%; padding: .7rem; margin-top: .3rem;
+      border: 1px solid #ddd; border-radius: 8px; font-size: .95rem;
+    }
+    textarea { resize: vertical; min-height: 70px; }
+    button {
+      margin-top: 1.2rem; background: #1976d2; color: #fff;
+      font-weight: bold; cursor: pointer; border: none; transition: .3s;
+    }
+    button:hover { background: #0d47a1; }
+
+    /* RESUMO */
+    #resumo {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .card-resumo {
+      background: #fff; padding: 1rem; border-radius: 12px;
+      text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .card-resumo h3 { font-size: 1rem; margin-bottom: .5rem; color: #555; }
+    .card-resumo p { font-size: 1.2rem; font-weight: bold; color: #0d47a1; }
+
+    /* FILTROS */
+    #filtros { text-align: center; margin-bottom: 2rem; }
+    #filtros button {
+      display: inline-block; margin: 0 .4rem; padding: .5rem 1rem;
+      border-radius: 20px; border: none; background: #eee;
+      cursor: pointer; font-weight: 600; transition: .3s;
+    }
+    #filtros button.active, #filtros button:hover { background: #1976d2; color: #fff; }
+
+    /* LISTA */
+    .agendamento {
+      background: #fff; padding: 1rem; border-radius: 12px;
+      margin-bottom: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .campo { margin: .4rem 0; }
+    .campo strong { color: #444; display: inline-block; min-width: 120px; }
+    .status { font-weight: 600; margin: .5rem 0; }
+    .acoes { margin-top: .5rem; display: flex; gap: .5rem; }
+    .acoes .acao {
+      flex: 1; padding: .5rem; border: none; border-radius: 8px;
+      font-weight: bold; cursor: pointer; transition: .3s;
+    }
+    .concluir { background: #4caf50; color: #fff; }
+    .cancelar { background: #ff9800; color: #fff; }
+    .excluir { background: #f44336; color: #fff; }
+    .acao:hover { opacity: .9; }
   </style>
 </head>
 <body>
@@ -15,6 +86,7 @@
   </header>
 
   <main>
+    <!-- FORM -->
     <form id="agendamento-form">
       <h2>Novo Agendamento</h2>
       <label for="nome">Nome do Cliente</label>
@@ -35,7 +107,7 @@
       <button id="btnSalvar" type="submit">Salvar Agendamento</button>
     </form>
 
-    <!-- Resumo -->
+    <!-- RESUMO -->
     <section id="resumo">
       <div class="card-resumo">
         <h3>Ganhos Brutos (Mês)</h3>
@@ -55,16 +127,16 @@
       </div>
     </section>
 
-    <!-- Filtros -->
+    <!-- FILTROS -->
     <section id="filtros">
       <button onclick="filtrar('todos')" class="active">Todos</button>
       <button onclick="filtrar('pendentes')">Pendentes</button>
       <button onclick="filtrar('concluidos')">Concluídos</button>
     </section>
 
-    <!-- Lista -->
+    <!-- LISTA -->
     <section id="lista-agendamentos">
-      <h2>Agendamentos</h2>
+      <h2 style="margin-bottom:1rem; color:#0d47a1;">Agendamentos</h2>
       <div id="agendamentos-container"></div>
     </section>
   </main>
@@ -103,7 +175,6 @@
           <button class="acao excluir" onclick="excluirAgendamento(${index})">Excluir</button>
         </div>
       `;
-
       return div;
     }
 
@@ -149,7 +220,7 @@
     }
 
     form.addEventListener('submit', (e) => {
-      e.preventDefault(); // impede recarregar página
+      e.preventDefault();
 
       const nome = document.getElementById('nome').value.trim();
       const valor = parseFloat(document.getElementById('valor').value);
@@ -162,11 +233,7 @@
         return;
       }
 
-      const novoAgendamento = {
-        nome, valor, gasto, dataEntrega, servico,
-        concluido: false
-      };
-
+      const novoAgendamento = { nome, valor, gasto, dataEntrega, servico, concluido: false };
       agendamentos.push(novoAgendamento);
       salvarAgendamentos();
       renderizarAgendamentos();
