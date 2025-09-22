@@ -150,7 +150,39 @@
   </style>
 </head>
 <body>
-    
+
+    <h1>Testando a conexão com o Supabase...</h1>
+    <p>Abra o console para ver o resultado (Clique direito -> Inspecionar -> Console).</p>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Suas chaves de API
+        const SUPABASE_URL = 'https://mlpomrqpczbbucwgwtpv.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1scG9tcnFwY3piYnVjd2d3dHB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1NjM4ODQsImV4cCI6MjA3NDEzOTg4NH0.CrhmRf9CHzZ7KSvOQqN4TarMcryyPo4CGSHG6Mwq8yI';
+
+        // Inicializando o cliente Supabase
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        console.log("Tentando conectar ao Supabase...");
+
+        // Função de teste assíncrona
+        async function testConnection() {
+            // Tenta pegar a sessão atual. É um teste simples para ver se a comunicação funciona.
+            const { data, error } = await db.auth.getSession();
+
+            if (error) {
+                console.error("ERRO DE CONEXÃO:", error.message);
+            } else {
+                console.log("CONEXÃO COM SUPABASE OK!", data);
+            }
+        }
+
+        // Roda a função de teste
+        testConnection();
+    </script>
+
+  
     <div id="auth-container">
         <div style="max-width: 400px; margin: 100px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
             <h2 style="text-align: center; color: #0a74da; margin-bottom: 20px;">Acessar Painel</h2>
