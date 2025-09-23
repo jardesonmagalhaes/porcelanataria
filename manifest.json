@@ -1,0 +1,21 @@
+{
+    "name": "PJ Porcelanataria",
+    "short_name": "PJ Porcelana",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#f4f6f9",
+    "theme_color": "#0a74da",
+    "description": "Gerenciador de agendamentos para PJ Porcelanataria.",
+    "icons": [
+        {
+            "src": "images/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
