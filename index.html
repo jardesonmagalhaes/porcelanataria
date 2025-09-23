@@ -1,213 +1,320 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PJ Porcelanataria</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      background-color: #f4f6f9;
-      color: #333;
-      padding: 20px;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-      position: relative;
-    }
-    header h1 {
-      font-size: 2rem;
-      color: #0a74da;
-    }
-    header p {
-      color: #555;
-      margin-top: 5px;
-    }
-    .resumo {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-    .card-resumo {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-      flex: 1 1 250px;
-      text-align: center;
-    }
-    .card-resumo h3 {
-      font-size: 1rem;
-      color: #777;
-      margin-bottom: 8px;
-    }
-    .card-resumo p {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #0a74da;
-    }
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 30px;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    form h2 {
-      margin-bottom: 15px;
-      color: #0a74da;
-    }
-    form input,
-    form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-    form button {
-      background: #0a74da;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    form button:hover {
-      background: #064a9e;
-    }
-    #agendamentos-container {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .agendamento {
-      background: white;
-      padding: 20px;
-      border-left: 6px solid #0a74da;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-    .agendamento h3 {
-      margin-bottom: 8px;
-      color: #0a74da;
-    }
-    .agendamento p {
-      margin: 4px 0;
-      font-size: 0.95rem;
-    }
-    .status {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    button.acao {
-      margin-top: 10px;
-      margin-right: 5px;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    .concluir {
-      background-color: green;
-      color: white;
-    }
-    .cancelar {
-      background-color: orange;
-      color: white;
-    }
-    .excluir {
-      background-color: red;
-      color: white;
-    }
-    .hidden {
-        display: none;
-    }
-    @media (max-width: 600px) {
-      form,
-      #agendamentos-container {
-        padding: 10px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="theme-color" content="#0a74da"/>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icon-192x192.png">
+
+    <title>PJ Porcelanataria</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- MELHORIAS GERAIS DE DESIGN --- */
+        :root {
+            --primary-color: #0a74da;
+            --dark-primary: #064a9e;
+            --light-gray: #f4f6f9;
+            --text-color: #333;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif; /* Nova fonte */
+        }
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        header p {
+            color: #555;
+            margin-top: 5px;
+        }
+        #logout-button {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            transition: background 0.3s;
+        }
+        #logout-button:hover {
+            background: #c0392b;
+        }
+
+        /* --- CARDS DE RESUMO --- */
+        .resumo {
+            display: grid; /* Usando grid para melhor alinhamento */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .card-resumo {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+        .card-resumo h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #777;
+            margin-bottom: 8px;
+        }
+        .card-resumo p {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* --- FORMULÁRIO --- */
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+        }
+        form h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        form label { /* NOVO: Estilo para as labels */
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        form input,
+        form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        form input:focus,
+        form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10, 116, 218, 0.2);
+        }
+        form button {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        form button:hover {
+            background: var(--dark-primary);
+        }
+
+        /* --- LISTA DE AGENDAMENTOS --- */
+        #agendamentos-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .agendamento {
+            background: white;
+            padding: 20px;
+            border-left: 6px solid var(--primary-color);
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        .agendamento h3 {
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .agendamento p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .status {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .observacoes-texto { /* NOVO: Estilo para observações */
+            background-color: #f9f9f9;
+            border-left: 3px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap; /* Mantém quebras de linha */
+        }
+        
+        .botoes-acao {
+             margin-top: 15px;
+        }
+        button.acao {
+            margin-right: 8px;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        button.acao:hover {
+            opacity: 0.8;
+        }
+
+        .concluir { background-color: #28a745; color: white; }
+        .cancelar { background-color: #ffc107; color: black; }
+        .excluir { background-color: #dc3545; color: white; }
+        
+        /* --- Tela de Login --- */
+        #auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* --- MELHORIAS DE RESPONSIVIDADE --- */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .container { padding: 15px; }
+            #logout-button {
+                position: static;
+                margin-top: 15px;
+            }
+        }
+        @media (max-width: 480px) {
+            body { font-size: 14px; }
+            .card-resumo p { font-size: 1.5rem; }
+            form { padding: 20px; }
+        }
+    </style>
 </head>
 <body>
-  
+    
     <div id="auth-container">
-        <div style="max-width: 400px; margin: 100px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
-            <h2 style="text-align: center; color: #0a74da; margin-bottom: 20px;">Acessar PJ Porcelanataria</h2>
+        <div class="login-box">
+            <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 25px;">Acessar PJ Porcelanataria</h2>
             <form id="login-form">
-                <input type="email" id="login-email" placeholder="Seu e-mail" required />
-                <input type="password" id="login-password" placeholder="Sua senha" required />
-                <button type="submit">Entrar</button>
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" required />
+                <label for="login-password">Senha</label>
+                <input type="password" id="login-password" required />
+                <button type="submit" style="width: 100%;">Entrar</button>
             </form>
-            <p id="auth-error" style="color: red; text-align: center; margin-top: 10px;"></p>
+            <p id="auth-error" style="color: red; text-align: center; margin-top: 15px;"></p>
         </div>
     </div>
 
     <div id="app-container" class="hidden">
-        <header>
-            <h1>Gerenciamento de Porcelanataria</h1>
-            <p>Agendamento de Clientes</p>
-            <button id="logout-button" style="background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; position: absolute; top: 20px; right: 20px;">Sair</button>
-        </header>
+        <div class="container">
+            <header>
+                <h1>Gerenciamento de Porcelanataria</h1>
+                <p>Agendamento de Clientes</p>
+                <button id="logout-button">Sair</button>
+            </header>
 
-        <section class="resumo">
-            <div class="card-resumo">
-                <h3>Ganhos do Mês</h3>
-                <p id="ganhosMes">R$ 0,00</p>
-            </div>
-            <div class="card-resumo">
-                <h3>Gastos do Mês</h3>
-                <p id="gastosMes">R$ 0,00</p>
-            </div>
-            <div class="card-resumo">
-                <h3>Lucro Líquido</h3>
-                <p id="lucroMes">R$ 0,00</p>
-            </div>
-        </section>
-
-        <main>
-            <form id="agendamento-form">
-                <h2>Novo Agendamento</h2>
-                <input type="text" id="nome" placeholder="Nome do Cliente" required />
-                <input type="number" id="valor" placeholder="Valor do Produto/Serviço" required />
-                <input type="number" id="gasto" placeholder="Gasto (despesa)" required />
-                <input type="text" id="servico" placeholder="Serviço" required />
-                <input type="date" id="dataEntrega" required />
-                <button type="submit">Salvar Agendamento</button>
-            </form>
-
-            <section id="lista-agendamentos">
-                <h2 style="text-align: center; margin-bottom: 10px">Agendamentos</h2>
-                <div id="agendamentos-container"></div>
+            <section class="resumo">
+                <div class="card-resumo">
+                    <h3>Ganhos do Mês</h3>
+                    <p id="ganhosMes">R$ 0,00</p>
+                </div>
+                <div class="card-resumo">
+                    <h3>Gastos do Mês</h3>
+                    <p id="gastosMes">R$ 0,00</p>
+                </div>
+                <div class="card-resumo">
+                    <h3>Lucro Líquido</h3>
+                    <p id="lucroMes">R$ 0,00</p>
+                </div>
             </section>
-        </main>
+
+            <main>
+                <form id="agendamento-form">
+                    <h2>Novo Agendamento</h2>
+                    
+                    <label for="nome">Nome do Cliente</label>
+                    <input type="text" id="nome" required />
+                    
+                    <label for="valor">Valor do Produto/Serviço</label>
+                    <input type="number" id="valor" required />
+                    
+                    <label for="gasto">Gasto (despesa)</label>
+                    <input type="number" id="gasto" required />
+                    
+                    <label for="servico">Serviço</label>
+                    <input type="text" id="servico" required />
+
+                    <label for="dataEntrega">Data de Entrega</label>
+                    <input type="date" id="dataEntrega" required />
+
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" rows="3"></textarea>
+                    
+                    <button type="submit">Salvar Agendamento</button>
+                </form>
+
+                <section id="lista-agendamentos">
+                    <h2 style="text-align: center; margin-bottom: 20px">Agendamentos</h2>
+                    <div id="agendamentos-container"></div>
+                </section>
+            </main>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
     // --- 1. CONFIGURAÇÃO DO SUPABASE ---
-    // !!! IMPORTANTE: COLOQUE SUAS CHAVES AQUI !!!
     const SUPABASE_URL = 'https://mlpomrqpczbbucwgwtpv.supabase.co'; 
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1scG9tcnFwY3piYnVjd2d3dHB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1NjM4ODQsImV4cCI6MjA3NDEzOTg4NH0.CrhmRf9CHzZ7KSvOQqN4TarMcryyPo4CGSHG6Mwq8yI';
 
@@ -225,13 +332,18 @@
     const container = document.getElementById("agendamentos-container");
     let agendamentos = [];
 
-    // --- 3. FUNÇÕES DA APLICAÇÃO (MODIFICADAS) ---
+    // --- 3. FUNÇÕES DA APLICAÇÃO ---
     const moeda = (valor) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(valor || 0);
 
     function criarAgendamentoHTML(agendamento) {
         const div = document.createElement("div");
         div.className = "agendamento";
-        const dataFormatada = new Date(agendamento.data_entrega + 'T00:00:00').toLocaleDateString('pt-BR');
+        const dataFormatada = new Date(agendamento.data_entrega + 'T03:00:00').toLocaleDateString('pt-BR');
+
+        // NOVO: Bloco HTML para as observações (só aparece se houver texto)
+        const obsHTML = agendamento.observacoes
+            ? `<p><strong>Observações:</strong></p><p class="observacoes-texto">${agendamento.observacoes}</p>`
+            : '';
 
         div.innerHTML = `
             <h3>${agendamento.nome}</h3>
@@ -239,12 +351,15 @@
             <p><strong>Valor:</strong> ${moeda(agendamento.valor)}</p>
             <p><strong>Gasto:</strong> ${moeda(agendamento.gasto)}</p>
             <p><strong>Data de entrega:</strong> ${dataFormatada}</p>
+            ${obsHTML}
             <p class="status">Status: ${agendamento.concluido ? "✅ Concluído" : "⏳ Pendente"}</p>
-            ${!agendamento.concluido
-                ? `<button class="acao concluir" onclick="concluirAgendamento(${agendamento.id})">Concluir</button>`
-                : `<button class="acao cancelar" onclick="cancelarConclusao(${agendamento.id})">Cancelar Concluído</button>`
-            }
-            <button class="acao excluir" onclick="excluirAgendamento(${agendamento.id})">Excluir</button>
+            <div class="botoes-acao">
+                ${!agendamento.concluido
+                    ? `<button class="acao concluir" onclick="concluirAgendamento(${agendamento.id})">Concluir</button>`
+                    : `<button class="acao cancelar" onclick="cancelarConclusao(${agendamento.id})">Reabrir</button>`
+                }
+                <button class="acao excluir" onclick="excluirAgendamento(${agendamento.id})">Excluir</button>
+            </div>
         `;
         return div;
     }
@@ -283,6 +398,7 @@
             gasto: parseFloat(document.getElementById("gasto").value),
             servico: document.getElementById("servico").value.trim(),
             data_entrega: document.getElementById("dataEntrega").value,
+            observacoes: document.getElementById("observacoes").value.trim(), // NOVO: Pegando valor das observações
             user_id: user.id
         };
 
@@ -296,17 +412,16 @@
         }
     });
 
-    async function concluirAgendamento(id) {
+    // Funções de ação (concluir, cancelar, excluir) permanecem as mesmas
+    window.concluirAgendamento = async function(id) {
         await db.from('agendamentos').update({ concluido: true }).eq('id', id);
         renderizarAgendamentos();
     }
-
-    async function cancelarConclusao(id) {
+    window.cancelarConclusao = async function(id) {
         await db.from('agendamentos').update({ concluido: false }).eq('id', id);
         renderizarAgendamentos();
     }
-
-    async function excluirAgendamento(id) {
+    window.excluirAgendamento = async function(id) {
         if (confirm("Deseja realmente excluir este agendamento?")) {
             await db.from('agendamentos').delete().eq('id', id);
             renderizarAgendamentos();
@@ -314,8 +429,16 @@
     }
 
     function atualizarResumo() {
-        const ganhos = agendamentos.filter(a => a.concluido).reduce((acc, a) => acc + a.valor, 0);
-        const gastos = agendamentos.filter(a => a.concluido).reduce((acc, a) => acc + a.gasto, 0);
+        const agora = new Date();
+        const primeiroDiaMes = new Date(agora.getFullYear(), agora.getMonth(), 1).toISOString().split('T')[0];
+        const ultimoDiaMes = new Date(agora.getFullYear(), agora.getMonth() + 1, 0).toISOString().split('T')[0];
+
+        const agendamentosDoMes = agendamentos.filter(a => 
+            a.concluido && a.data_entrega >= primeiroDiaMes && a.data_entrega <= ultimoDiaMes
+        );
+
+        const ganhos = agendamentosDoMes.reduce((acc, a) => acc + a.valor, 0);
+        const gastos = agendamentosDoMes.reduce((acc, a) => acc + a.gasto, 0);
         document.getElementById("ganhosMes").textContent = moeda(ganhos);
         document.getElementById("gastosMes").textContent = moeda(gastos);
         document.getElementById("lucroMes").textContent = moeda(ganhos - gastos);
@@ -324,11 +447,11 @@
     // --- 4. LÓGICA DE AUTENTICAÇÃO ---
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        authError.textContent = '';
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
         const { error } = await db.auth.signInWithPassword({ email, password });
         if (error) authError.textContent = 'Email ou senha inválidos.';
-        else authError.textContent = '';
     });
 
     logoutButton.addEventListener('click', () => {
@@ -337,16 +460,27 @@
 
     db.auth.onAuthStateChange((event, session) => {
         if (session) {
-            // Usuário está logado
             appContainer.classList.remove('hidden');
             authContainer.classList.add('hidden');
             renderizarAgendamentos();
         } else {
-            // Usuário não está logado
             appContainer.classList.add('hidden');
             authContainer.classList.remove('hidden');
+            agendamentos = []; // Limpa os dados ao deslogar
+            container.innerHTML = "";
+            atualizarResumo();
         }
     });
+
+    // --- 5. LÓGICA DO PWA (APP DE CELULAR) ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => console.log('Service Worker registrado com sucesso:', registration))
+                .catch(err => console.log('Falha ao registrar Service Worker:', err));
+        });
+    }
+
     </script>
 </body>
 </html>
