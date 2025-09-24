@@ -445,33 +445,26 @@
     }
 
     // --- 4. LÓGICA DE AUTENTICAÇÃO ---
-    // --- 4. LÓGICA DE AUTENTICAÇÃO ---
-loginForm.addEventListener('submit', async (e) => {
-    console.log("Função de login INICIADA!"); // <--- LINHA DE TESTE ADICIONADA
-
+  loginForm.addEventListener('submit', async (e) => {
+    console.log("Função de login INICIADA!"); // Teste 1: Sabemos que chega aqui.
     e.preventDefault();
-    authError.textContent = '';
+    authError.textContent = 'Verificando...'; // Feedback para o usuário
+
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
+
     const { error } = await db.auth.signInWithPassword({ email, password });
-    if (error) authError.textContent = 'Email ou senha inválidos.';
-});
 
-logoutButton.addEventListener('click', () => {
-    db.auth.signOut();
-});
+    // Teste 2: Vamos ver o que o Supabase retornou no objeto 'error'.
+    console.log("Resposta do Supabase (objeto error):", error); 
 
-db.auth.onAuthStateChange((event, session) => {
-    if (session) {
-        appContainer.classList.remove('hidden');
-        authContainer.classList.add('hidden');
-        renderizarAgendamentos();
+    if (error) {
+        authError.textContent = 'Email ou senha inválidos.';
+        console.error("Erro detalhado do Supabase:", error); // Também mostra o erro no console
     } else {
-        appContainer.classList.add('hidden');
-        authContainer.classList.remove('hidden');
-        agendamentos = []; // Limpa os dados ao deslogar
-        container.innerHTML = "";
-        atualizarResumo();
+        // Se chegou aqui sem erro, o login teve sucesso.
+        // O onAuthStateChange deve fazer o resto.
+        authError.textContent = ''; 
     }
 });
 
