@@ -444,30 +444,52 @@
         document.getElementById("lucroMes").textContent = moeda(ganhos - gastos);
     }
 
-    // --- 4. LÓGICA DE AUTENTICAÇÃO ---
-  loginForm.addEventListener('submit', async (e) => {
-    console.log("Função de login INICIADA!"); // Teste 1: Sabemos que chega aqui.
+   // --- 4. LÓGICA DE AUTENTICAÇÃO ---
+
+// PARTE 1: A FUNÇÃO DE LOGIN (Essa você já tinha, mas com nossos testes)
+loginForm.addEventListener('submit', async (e) => {
+    console.log("Função de login INICIADA!");
     e.preventDefault();
-    authError.textContent = 'Verificando...'; // Feedback para o usuário
+    authError.textContent = 'Verificando...';
 
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
     const { error } = await db.auth.signInWithPassword({ email, password });
 
-    // Teste 2: Vamos ver o que o Supabase retornou no objeto 'error'.
-    console.log("Resposta do Supabase (objeto error):", error); 
+    console.log("Resposta do Supabase (objeto error):", error);
 
     if (error) {
         authError.textContent = 'Email ou senha inválidos.';
-        console.error("Erro detalhado do Supabase:", error); // Também mostra o erro no console
+        console.error("Erro detalhado do Supabase:", error);
     } else {
-        // Se chegou aqui sem erro, o login teve sucesso.
-        // O onAuthStateChange deve fazer o resto.
         authError.textContent = ''; 
     }
 });
 
+// PARTE 2: A FUNÇÃO DE LOGOUT (ESTAVA FALTANDO NO SEU CÓDIGO!)
+logoutButton.addEventListener('click', () => {
+    db.auth.signOut();
+});
+
+// PARTE 3: O OBSERVADOR DE LOGIN (A PEÇA MAIS IMPORTANTE, TAMBÉM ESTAVA FALTANDO!)
+db.auth.onAuthStateChange((event, session) => {
+    console.log("onAuthStateChange disparado! Evento:", event);
+
+    if (session) {
+        console.log("SESSÃO ENCONTRADA! O usuário está logado.", session);
+        appContainer.classList.remove('hidden');
+        authContainer.classList.add('hidden');
+        renderizarAgendamentos();
+    } else {
+        console.log("Nenhuma sessão encontrada. O usuário está deslogado.");
+        appContainer.classList.add('hidden');
+        authContainer.classList.remove('hidden');
+        agendamentos = [];
+        container.innerHTML = "";
+        atualizarResumo();
+    }
+});
     // --- 5. LÓGICA DO PWA (APP DE CELULAR) ---
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
