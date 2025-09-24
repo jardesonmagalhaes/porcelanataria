@@ -422,44 +422,44 @@
     }
 
     // --- 4. LÓGICA DE AUTENTICAÇÃO ---
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        authError.textContent = 'Verificando...';
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-        const { error } = await db.auth.signInWithPassword({ email, password });
-        if (error) {
-            authError.textContent = 'Email ou senha inválidos.';
-        } else {
-            authError.textContent = ''; 
-        }
-    });
+    // --- 4. LÓGICA DE AUTENTICAÇÃO ---
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    authError.textContent = 'Verificando...';
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const { error } = await db.auth.signInWithPassword({ email, password });
+    if (error) {
+        authError.textContent = 'Email ou senha inválidos.';
+    } else {
+        authError.textContent = ''; 
+    }
+});
 
-    logoutButton.addEventListener('click', () => {
-        db.auth.signOut();
-    });
+logoutButton.addEventListener('click', () => {
+    db.auth.signOut();
+});
 
-    db.auth.onAuthStateChange((event, session) => {
-        if (session) {
-            appContainer.classList.remove('hidden');
-            authContainer.classList.add('hidden');
-            renderizarAgendamentos();
-        } else {
-            appContainer.classList.add('hidden');
-            authContainer.classList.remove('hidden');
-            agendamentos = [];
-            container.innerHTML = "";
-            atualizarResumo();
-        }
-    db.auth.onAuthStateChange((event, session) => {
+db.auth.onAuthStateChange((event, session) => {
     if (session) {
-        document.body.style.backgroundColor = 'red'; // <--- ADICIONE SÓ ESTA LINHA
         appContainer.classList.remove('hidden');
         authContainer.classList.add('hidden');
         renderizarAgendamentos();
     } else {
-        // ...
+        appContainer.classList.add('hidden');
+        authContainer.classList.remove('hidden');
+        agendamentos = [];
+        container.innerHTML = "";
+        atualizarResumo();
     }
+});
+
+// --- 5. LÓGICA DO PWA (APP DE CELULAR) ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => console.log('Service Worker registrado com sucesso:', registration))
+            .catch(err => console.log('Falha ao registrar Service Worker:', err));
     });
 
     // --- 5. LÓGICA DO PWA (APP DE CELULAR) ---
