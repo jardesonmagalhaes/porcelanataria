@@ -445,32 +445,35 @@
     }
 
     // --- 4. LÓGICA DE AUTENTICAÇÃO ---
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        authError.textContent = '';
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-        const { error } = await db.auth.signInWithPassword({ email, password });
-        if (error) authError.textContent = 'Email ou senha inválidos.';
-    });
+    // --- 4. LÓGICA DE AUTENTICAÇÃO ---
+loginForm.addEventListener('submit', async (e) => {
+    console.log("Função de login INICIADA!"); // <--- LINHA DE TESTE ADICIONADA
 
-    logoutButton.addEventListener('click', () => {
-        db.auth.signOut();
-    });
+    e.preventDefault();
+    authError.textContent = '';
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const { error } = await db.auth.signInWithPassword({ email, password });
+    if (error) authError.textContent = 'Email ou senha inválidos.';
+});
 
-    db.auth.onAuthStateChange((event, session) => {
-        if (session) {
-            appContainer.classList.remove('hidden');
-            authContainer.classList.add('hidden');
-            renderizarAgendamentos();
-        } else {
-            appContainer.classList.add('hidden');
-            authContainer.classList.remove('hidden');
-            agendamentos = []; // Limpa os dados ao deslogar
-            container.innerHTML = "";
-            atualizarResumo();
-        }
-    });
+logoutButton.addEventListener('click', () => {
+    db.auth.signOut();
+});
+
+db.auth.onAuthStateChange((event, session) => {
+    if (session) {
+        appContainer.classList.remove('hidden');
+        authContainer.classList.add('hidden');
+        renderizarAgendamentos();
+    } else {
+        appContainer.classList.add('hidden');
+        authContainer.classList.remove('hidden');
+        agendamentos = []; // Limpa os dados ao deslogar
+        container.innerHTML = "";
+        atualizarResumo();
+    }
+});
 
     // --- 5. LÓGICA DO PWA (APP DE CELULAR) ---
     if ('serviceWorker' in navigator) {
