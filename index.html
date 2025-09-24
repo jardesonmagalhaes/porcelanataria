@@ -451,6 +451,15 @@
             container.innerHTML = "";
             atualizarResumo();
         }
+    db.auth.onAuthStateChange((event, session) => {
+    if (session) {
+        document.body.style.backgroundColor = 'red'; // <--- ADICIONE SÓ ESTA LINHA
+        appContainer.classList.remove('hidden');
+        authContainer.classList.add('hidden');
+        renderizarAgendamentos();
+    } else {
+        // ...
+    }
     });
 
     // --- 5. LÓGICA DO PWA (APP DE CELULAR) ---
