@@ -15,7 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- MELHORIAS GERAIS DE DESIGN --- */
         :root {
             --primary-color: #0a74da;
             --dark-primary: #064a9e;
@@ -28,7 +27,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Poppins", sans-serif; /* Nova fonte */
+            font-family: "Poppins", sans-serif;
         }
         body {
             background-color: var(--light-gray);
@@ -68,10 +67,8 @@
         #logout-button:hover {
             background: #c0392b;
         }
-
-        /* --- CARDS DE RESUMO --- */
         .resumo {
-            display: grid; /* Usando grid para melhor alinhamento */
+            display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
@@ -94,8 +91,6 @@
             font-weight: 600;
             color: var(--primary-color);
         }
-
-        /* --- FORMULÁRIO --- */
         form {
             background: white;
             padding: 30px;
@@ -108,7 +103,7 @@
             color: var(--primary-color);
             font-weight: 600;
         }
-        form label { /* NOVO: Estilo para as labels */
+        form label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
@@ -144,8 +139,6 @@
         form button:hover {
             background: var(--dark-primary);
         }
-
-        /* --- LISTA DE AGENDAMENTOS --- */
         #agendamentos-container {
             display: flex;
             flex-direction: column;
@@ -173,15 +166,14 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        .observacoes-texto { /* NOVO: Estilo para observações */
+        .observacoes-texto {
             background-color: #f9f9f9;
             border-left: 3px solid #ddd;
             padding: 10px;
             margin-top: 10px;
             border-radius: 5px;
-            white-space: pre-wrap; /* Mantém quebras de linha */
+            white-space: pre-wrap;
         }
-        
         .botoes-acao {
              margin-top: 15px;
         }
@@ -198,12 +190,9 @@
         button.acao:hover {
             opacity: 0.8;
         }
-
         .concluir { background-color: #28a745; color: white; }
         .cancelar { background-color: #ffc107; color: black; }
         .excluir { background-color: #dc3545; color: white; }
-        
-        /* --- Tela de Login --- */
         #auth-container {
             display: flex;
             align-items: center;
@@ -218,12 +207,9 @@
             border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
         }
-
         .hidden {
             display: none;
         }
-
-        /* --- MELHORIAS DE RESPONSIVIDADE --- */
         @media (max-width: 768px) {
             header h1 { font-size: 1.8rem; }
             .container { padding: 15px; }
@@ -281,25 +267,18 @@
             <main>
                 <form id="agendamento-form">
                     <h2>Novo Agendamento</h2>
-                    
                     <label for="nome">Nome do Cliente</label>
                     <input type="text" id="nome" required />
-                    
                     <label for="valor">Valor do Produto/Serviço</label>
                     <input type="number" id="valor" required />
-                    
                     <label for="gasto">Gasto (despesa)</label>
                     <input type="number" id="gasto" required />
-                    
                     <label for="servico">Serviço</label>
                     <input type="text" id="servico" required />
-
                     <label for="dataEntrega">Data de Entrega</label>
                     <input type="date" id="dataEntrega" required />
-
                     <label for="observacoes">Observações</label>
                     <textarea id="observacoes" rows="3"></textarea>
-                    
                     <button type="submit">Salvar Agendamento</button>
                 </form>
 
@@ -340,7 +319,6 @@
         div.className = "agendamento";
         const dataFormatada = new Date(agendamento.data_entrega + 'T03:00:00').toLocaleDateString('pt-BR');
 
-        // NOVO: Bloco HTML para as observações (só aparece se houver texto)
         const obsHTML = agendamento.observacoes
             ? `<p><strong>Observações:</strong></p><p class="observacoes-texto">${agendamento.observacoes}</p>`
             : '';
@@ -398,7 +376,7 @@
             gasto: parseFloat(document.getElementById("gasto").value),
             servico: document.getElementById("servico").value.trim(),
             data_entrega: document.getElementById("dataEntrega").value,
-            observacoes: document.getElementById("observacoes").value.trim(), // NOVO: Pegando valor das observações
+            observacoes: document.getElementById("observacoes").value.trim(),
             user_id: user.id
         };
 
@@ -412,7 +390,6 @@
         }
     });
 
-    // Funções de ação (concluir, cancelar, excluir) permanecem as mesmas
     window.concluirAgendamento = async function(id) {
         await db.from('agendamentos').update({ concluido: true }).eq('id', id);
         renderizarAgendamentos();
@@ -444,62 +421,38 @@
         document.getElementById("lucroMes").textContent = moeda(ganhos - gastos);
     }
 
-   // --- 4. LÓGICA DE AUTENTICAÇÃO ---
+    // --- 4. LÓGICA DE AUTENTICAÇÃO ---
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        authError.textContent = 'Verificando...';
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const { error } = await db.auth.signInWithPassword({ email, password });
+        if (error) {
+            authError.textContent = 'Email ou senha inválidos.';
+        } else {
+            authError.textContent = ''; 
+        }
+    });
 
-// PARTE 1: A FUNÇÃO DE LOGIN (Essa você já tinha, mas com nossos testes)
-loginForm.addEventListener('submit', async (e) => {
-    console.log("Função de login INICIADA!");
-    e.preventDefault();
-    authError.textContent = 'Verificando...';
+    logoutButton.addEventListener('click', () => {
+        db.auth.signOut();
+    });
 
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
+    db.auth.onAuthStateChange((event, session) => {
+        if (session) {
+            appContainer.classList.remove('hidden');
+            authContainer.classList.add('hidden');
+            renderizarAgendamentos();
+        } else {
+            appContainer.classList.add('hidden');
+            authContainer.classList.remove('hidden');
+            agendamentos = [];
+            container.innerHTML = "";
+            atualizarResumo();
+        }
+    });
 
-    const { error } = await db.auth.signInWithPassword({ email, password });
-
-    console.log("Resposta do Supabase (objeto error):", error);
-
-    if (error) {
-        authError.textContent = 'Email ou senha inválidos.';
-        console.error("Erro detalhado do Supabase:", error);
-    } else {
-        authError.textContent = ''; 
-    }
-});
-
-// PARTE 2: A FUNÇÃO DE LOGOUT (ESTAVA FALTANDO NO SEU CÓDIGO!)
-logoutButton.addEventListener('click', () => {
-    db.auth.signOut();
-});
-
-// PARTE 3: O OBSERVADOR DE LOGIN (A PEÇA MAIS IMPORTANTE, TAMBÉM ESTAVA FALTANDO!)
-db.auth.onAuthStateChange((event, session) => {
-    console.log("--- onAuthStateChange disparado! Evento:", event);
-
-    if (session) {
-        console.log("SESSÃO ENCONTRADA! O usuário está logado.");
-
-        // INÍCIO DO TESTE DE INSPEÇÃO
-        console.log("Inspecionando os elementos da tela...");
-        console.log("O container do App ANTES da mudança é:", appContainer);
-        console.log("O container de Auth ANTES da mudança é:", authContainer);
-
-        // As linhas que deveriam mudar a tela
-        appContainer.classList.remove('hidden');
-        authContainer.classList.add('hidden');
-
-        console.log("As classes CSS do container do App DEPOIS da mudança são:", appContainer.classList);
-        console.log("As classes CSS do container de Auth DEPOIS da mudança são:", authContainer.classList);
-        // FIM DO TESTE DE INSPEÇÃO
-
-        renderizarAgendamentos();
-        
-    } else {
-        console.log("Nenhuma sessão encontrada. O usuário está deslogado.");
-        appContainer.classList.add('hidden');
-        authContainer.classList.remove('hidden');
-    }
-});
     // --- 5. LÓGICA DO PWA (APP DE CELULAR) ---
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
