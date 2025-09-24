@@ -474,20 +474,30 @@ logoutButton.addEventListener('click', () => {
 
 // PARTE 3: O OBSERVADOR DE LOGIN (A PEÇA MAIS IMPORTANTE, TAMBÉM ESTAVA FALTANDO!)
 db.auth.onAuthStateChange((event, session) => {
-    console.log("onAuthStateChange disparado! Evento:", event);
+    console.log("--- onAuthStateChange disparado! Evento:", event);
 
     if (session) {
-        console.log("SESSÃO ENCONTRADA! O usuário está logado.", session);
+        console.log("SESSÃO ENCONTRADA! O usuário está logado.");
+
+        // INÍCIO DO TESTE DE INSPEÇÃO
+        console.log("Inspecionando os elementos da tela...");
+        console.log("O container do App ANTES da mudança é:", appContainer);
+        console.log("O container de Auth ANTES da mudança é:", authContainer);
+
+        // As linhas que deveriam mudar a tela
         appContainer.classList.remove('hidden');
         authContainer.classList.add('hidden');
+
+        console.log("As classes CSS do container do App DEPOIS da mudança são:", appContainer.classList);
+        console.log("As classes CSS do container de Auth DEPOIS da mudança são:", authContainer.classList);
+        // FIM DO TESTE DE INSPEÇÃO
+
         renderizarAgendamentos();
+        
     } else {
         console.log("Nenhuma sessão encontrada. O usuário está deslogado.");
         appContainer.classList.add('hidden');
         authContainer.classList.remove('hidden');
-        agendamentos = [];
-        container.innerHTML = "";
-        atualizarResumo();
     }
 });
     // --- 5. LÓGICA DO PWA (APP DE CELULAR) ---
